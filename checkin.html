@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>公式スポットへの投稿 | 思い出ノート（スポットメモリー）</title>
+<style>
+  :root { color-scheme: light; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #faf8f5;
+    color: #2b2b2b;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    line-height: 1.8;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  h1 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 14px;
+    color: #555;
+  }
+  .spinner {
+    margin: 32px auto;
+    width: 32px;
+    height: 32px;
+    border: 3px solid #E6D6AC;
+    border-top-color: #2E8B57;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .install {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #E4DECF;
+  }
+  .install p {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  a.button {
+    display: inline-block;
+    margin: 6px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background: #2E8B57;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>思い出ノートを開いています…</h1>
+    <div class="spinner"></div>
+    <p>アプリがインストールされている場合、自動的に投稿画面が開きます。</p>
+
+    <div class="install" id="install-section" style="display:none;">
+      <p id="install-text">アプリをお持ちでない方は、近日公開予定のアプリをお待ちください。</p>
+      <!-- 実際のストア／TestFlightリンクが用意でき次第、ここにボタンを追加する。 -->
+    </div>
+  </div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var spot = params.get('spot');
+      var code = params.get('code');
+      if (spot) {
+        var deepLink = 'omoidenote://official-checkin/' + encodeURIComponent(spot) +
+          (code ? '?code=' + encodeURIComponent(code) : '');
+        window.location.href = deepLink;
+      }
+      // アプリが無い場合はdeepLinkが素通りされてこのページに留まるので、
+      // 少し待ってからインストール案内を表示する。
+      setTimeout(function () {
+        document.getElementById('install-section').style.display = 'block';
+      }, 1200);
+    })();
+  </script>
+</body>
+</html>
